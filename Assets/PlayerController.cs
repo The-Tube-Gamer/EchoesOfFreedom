@@ -81,6 +81,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Player Hit Head = " + hitHead);
         Debug.Log("Player Fast Falling = " + fastFalling);
         Debug.Log("Player Vertical Velocity = " + VerticalVelocity);
+        Debug.Log("Player Jumps Used = " + numJumpsUsed);
         JumpCheck();
         CountTimers();
         GetComponent<Animator>().SetFloat("Speed", GameManager.instance.GetSongBPM() / 120);
@@ -253,7 +254,7 @@ public class PlayerController : MonoBehaviour
         }
 
         jumpBufferTimer = 0f;
-        numberJumpsUsed += numJumpsUsed;
+        numJumpsUsed += numberJumpsUsed;
         VerticalVelocity = stats.InitJumpVel;
     }
     void Jump()
