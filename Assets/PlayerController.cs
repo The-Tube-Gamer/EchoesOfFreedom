@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Player Jumps Used = " + numJumpsUsed);
         JumpCheck();
         CountTimers();
-        GetComponent<Animator>().SetFloat("Speed", GameManager.instance.GetSongBPM() / 120);
+        //GetComponent<Animator>().SetFloat("Speed", GameManager.instance.GetSongBPM() / 120);
 
         // Read movement input
         GetComponent<Animator>().SetFloat("Move", InputManager.movement.x);
