@@ -3,40 +3,54 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-    
+
     public static GameManager instance = null;
-    public AudioSource player;
+    public AudioSource[] sources;
     public Music[] trackList;
     public bool beat;
     public int currentSong;
+    public int currentSongPart;
+    public int weaponID;
     public float timer;
     public float timerRounded;
     public bool musicPlaying;
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    }
+
+    // Update is called once per frame
+    void Update()
     {
         timer += Time.deltaTime;
         float roundAmount = 4;
         //timerRounded = Mathf.Round(timer * roundAmount) / roundAmount;
-        Debug.Log(timerRounded % (trackList[currentSong].bpm / 120f));
+        //Debug.Log(timerRounded % (trackList[currentSong].bpm / 120f));
         if (timer >= (120f / trackList[currentSong].bpm))
         {
             timer = 0;
             beat = true;
             if (!musicPlaying)
             {
-                GetComponent<AudioSource>().Play();
+                for (int i = 0; i < sources.Length; i++)
+                {
+                    if (i == currentSongPart)
+                    {
+                        sources[i].mute = false;
+                    }
+                    else
+                    {
+                        sources[i].mute = true;
+                    }
+                    sources[i].clip = trackList[currentSong].audioClips[i];
+                    sources[i].Play();
+                }
                 musicPlaying = true;
             }
         }
         else if (timer <= 0.5f)
-            {
+        {
             beat = true;
         }
         else
@@ -44,6 +58,25 @@ public class GameManager : MonoBehaviour {
             beat = false;
         }
 
+    }
+    public void SwitchPart(int nPart)
+    {
+        currentSongPart = nPart;
+        for (int i = 0; i < sources.Length; i++)
+        {
+            if (i == currentSongPart)
+            {
+                sources[i].mute = false;
+            }
+            else
+            {
+                sources[i].mute = true;
+            }
+        }
+    }
+    public float GetSongBPM()
+    {
+        return trackList[currentSong].bpm;
     }
     void Awake()
     {
